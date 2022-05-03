@@ -130,11 +130,6 @@ class Agent(object):
         plt.ylabel('Achieved score')
         plt.legend()
         plt.show()
-        '''
-        - maybe find the max in this graph and highlight it
-        - find the convergence of it for example where it achieves 90 % of the points required for this to be solved
-        - print where this point is, also highlight it in the plot
-        '''
 
         # plot the length of the episodes
         plt.figure(2)
