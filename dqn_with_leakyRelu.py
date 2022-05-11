@@ -62,8 +62,6 @@ def build_dqn(lr, n_actions, input_dims, fc1_dims, fc2_dims):
     return model
 
 
-# agent class hosts hyper-params, agent_memory, and model it has a deep q network it isn't one
-
 class Agent(object):
     def __init__(self, alpha, gamma, n_actions, epsilon, batch_size, input_dims, file_name, epsilon_dec=0.996,
                  epsilon_end=0.01, mem_size=1000000):
@@ -146,6 +144,8 @@ class Agent(object):
 
     def save_model(self):
         self.q_eval.save(self.model_file)
+        print('...Model saved...')
 
     def load_model(self):  # no function but in main file to specify the file name
         self.q_eval = load_model(self.model_file)
+        print('...Model loaded...')
