@@ -7,9 +7,10 @@ from dqn_with_leakyRelu import Agent
 if __name__ == '__main__':
     start_time = time.time()
     env = gym.make('LunarLander-v2')
-    n_games = 5
+    n_games = 50
     training = False
-    evaluate = True
+    continue_training = True
+    evaluate = False
     agent = Agent(gamma=0.99, epsilon=1.0, alpha=0.0005, input_dims=8, n_actions=env.action_space.n, mem_size=100000,
                   batch_size=64, epsilon_end=0.01, file_name='dqn_model_with_leakyRelu_v5.h5')
 
@@ -19,7 +20,11 @@ if __name__ == '__main__':
     length_of_test_episodes = []
     eps_history = []
 
-    if training:
+    if training or continue_training:
+        if continue_training:
+            print('Training continued')
+            agent.load_model()
+
         for i in range(1, n_games+1):
             done = False
             score = 0
@@ -44,23 +49,6 @@ if __name__ == '__main__':
             avg_score = np.mean(training_scores)
             print('episode ', i, 'score %.2f' % score, 'average score %.2f' % avg_score)
             print('episode length: {}'.format(episode_length))
-
-            # test the model accuracy with evaluate
-            done = False
-            score = 0
-            episode_length = 0
-            observation = env.reset()
-
-            while not done:
-                action = agent.evaluate(observation)
-                observation_, reward, done, info = env.step(action)
-                score += reward
-                agent.remember(observation, action, reward, observation_, done)
-                observation = observation_
-                episode_length += 1
-
-            test_scores.append(score)
-            length_of_test_episodes.append(episode_length)
 
             # saving the model
             if i % 10 == 0:
